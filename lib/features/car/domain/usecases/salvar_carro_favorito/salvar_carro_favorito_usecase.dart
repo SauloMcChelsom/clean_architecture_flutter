@@ -2,4 +2,4 @@ import 'package:clean_architecture_flutter/features/car/domain/entities/carro_en
 
 abstract class SalvarCarroFavoritoUseCase {
   Future <bool> call(CarroEntity carroEntity);
-}
+} 

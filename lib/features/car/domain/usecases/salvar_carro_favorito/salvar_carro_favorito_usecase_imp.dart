@@ -13,4 +13,4 @@ class SalvarCarroFavoritoUseCaseImp implements SalvarCarroFavoritoUseCase {
     carroEntity.carroExportivo();
     return await _salvarCarroFavoritoRepository(carroEntity);
   }
-}
+} 
