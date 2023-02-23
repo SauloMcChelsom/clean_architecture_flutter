@@ -3,8 +3,6 @@ import 'package:clean_architecture_flutter/features/authentication/data/reposito
 import 'package:clean_architecture_flutter/features/authentication/domain/entities/auth_entity.dart';
 import 'package:clean_architecture_flutter/features/authentication/domain/entities/user_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-import 'package:get_it/get_it.dart';
 
 void main() {
   late AuthenticationRepositoryImp todoRepositoryImpl;
@@ -23,11 +21,20 @@ void main() {
 
   test('Should get all todos from local datasource', () async {
 
+    await todoRepositoryImpl.register(
+      email: 'saulo@mail.com', 
+      firstName: 'saulo', 
+      lastName: 'silva', 
+      password: '123'
+    );
+
     //when
-    var auth = AuthEntity(email: 'sss', password: '123');
+    var auth = AuthEntity(email: 'saulo@mail.com', password: '123');
     final result = await todoRepositoryImpl.authenticate(auth);
     UserEntity user = await todoRepositoryImpl.getCurrentUser();
     print(user.email);
+    print(user.name);
+    print(user.uid);
     //then
     expect(user, isInstanceOf<UserEntity>());
   });

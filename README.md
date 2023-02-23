@@ -3,6 +3,9 @@ https://github.com/devmuaz/flutter_clean_architecture
 https://github.com/ntminhdn/Flutter-Bloc-CleanArchitecture
 https://github.com/RashmiRanganathan/clean-code-architecture-flutter
 
+https://github1s.com/devmuaz/flutter_clean_architecture
+https://github1s.com/RashmiRanganathan/clean-code-architecture-flutter
+
 #dominio
 sempre o codigo começa no dominio
 o dominio e responsavel por toda a logica de negocio da aplicação

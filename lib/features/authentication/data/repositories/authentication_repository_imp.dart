@@ -15,13 +15,11 @@ class AuthenticationRepositoryImp  implements  AuthenticationRepository {
   @override
   Future<void> authenticate(AuthEntity auth) async {
     final UserEntity user = await localDatasource.signInWithEmailAndPassword(auth);
-    print(user);
   }
 
   @override
-  Future<void> forgotPassword(String email) {
-    // TODO: implement forgotPassword
-    throw UnimplementedError();
+  Future<void> forgotPassword(String email) async {
+    await localDatasource.forgotPassword(email);
   }
 
   @override
@@ -30,21 +28,18 @@ class AuthenticationRepositoryImp  implements  AuthenticationRepository {
   }
 
   @override
-  Future<bool> isAuthenticated() {
-    // TODO: implement isAuthenticated
-    throw UnimplementedError();
+  Future<bool> isAuthenticated() async {
+    return await localDatasource.isAuthenticated();
   }
 
   @override
-  Future<void> logout() {
-    // TODO: implement logout
-    throw UnimplementedError();
+  Future<void> logout() async {
+    return await localDatasource.logout();
   }
 
   @override
-  Future<void> register({required String firstName, required String lastName, required String email, required String password}) {
-    // TODO: implement register
-    throw UnimplementedError();
+  Future<void> register({required String firstName, required String lastName, required String email, required String password}) async {
+    await localDatasource.register(email: email, firstName: firstName, lastName: lastName, password: password);
   }
 
 }
