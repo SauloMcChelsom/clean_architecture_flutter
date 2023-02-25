@@ -16,6 +16,9 @@ abstract class AuthenticationRepository {
   /// Returns whether the [User] is authenticated.
   Future<bool> isAuthenticated();
 
+  /// Returns whether the [User] is authenticated.
+  Future<bool> isEmailAlreadyExists(String email);
+
   /// Returns the current authenticated [User].
   Future<UserEntity> getCurrentUser();
 

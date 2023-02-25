@@ -21,8 +21,12 @@ void main() {
 
   test('Should get all todos from local datasource', () async {
 
+    const String email = 'saulo@mail.com';
+
+    bool ismail = await todoRepositoryImpl.isEmailAlreadyExists(email);
+
     await todoRepositoryImpl.register(
-      email: 'saulo@mail.com', 
+      email: email, 
       firstName: 'saulo', 
       lastName: 'silva', 
       password: '123'
@@ -38,6 +42,4 @@ void main() {
     //then
     expect(user, isInstanceOf<UserEntity>());
   });
-
- 
 }

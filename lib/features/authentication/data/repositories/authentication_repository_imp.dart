@@ -41,5 +41,9 @@ class AuthenticationRepositoryImp  implements  AuthenticationRepository {
   Future<void> register({required String firstName, required String lastName, required String email, required String password}) async {
     await localDatasource.register(email: email, firstName: firstName, lastName: lastName, password: password);
   }
-
+  
+  @override
+  Future<bool> isEmailAlreadyExists(String email) async {
+    return await localDatasource.isEmailAlreadyExists(email);
+  }
 }

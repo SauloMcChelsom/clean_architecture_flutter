@@ -23,6 +23,16 @@ class AuthenticationLocalDatasource {
     return res;
   }
 
+  Future<bool> isEmailAlreadyExists(String email) async {
+    bool res = false;
+    for(var i in user){
+      if(i.email == email){
+        res = true;
+      }
+    }
+    return res;
+  }
+
   Future<UserEntity> getUser() async {
     return user[0];
   }
