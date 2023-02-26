@@ -9,28 +9,18 @@ void main() {
 
   //Esta função será chamada antes de cada teste ser executado
   setUp(() {
-    todoRepositoryImpl = AuthenticationRepositoryImp(
-      localDatasource: AuthenticationLocalDatasource()
-    );
+    todoRepositoryImpl = AuthenticationRepositoryImp(localDatasource: AuthenticationLocalDatasource());
   });
 
   //Esta função será chamada após a execução de cada teste
-  tearDown(() {
-   
-  });
+  tearDown(() {});
 
   test('Should get all todos from local datasource', () async {
-
     const String email = 'saulo@mail.com';
 
     bool ismail = await todoRepositoryImpl.isEmailAlreadyExists(email);
 
-    await todoRepositoryImpl.register(
-      email: email, 
-      firstName: 'saulo', 
-      lastName: 'silva', 
-      password: '123'
-    );
+    await todoRepositoryImpl.register(email: email, firstName: 'saulo', lastName: 'silva', password: '123');
 
     //when
     var auth = AuthEntity(email: 'saulo@mail.com', password: '123');

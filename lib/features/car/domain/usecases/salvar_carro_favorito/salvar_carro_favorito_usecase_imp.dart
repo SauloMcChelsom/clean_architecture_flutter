@@ -3,14 +3,13 @@ import 'package:clean_architecture_flutter/features/car/domain/repositories/salv
 import 'package:clean_architecture_flutter/features/car/domain/usecases/salvar_carro_favorito/salvar_carro_favorito_usecase.dart';
 
 class SalvarCarroFavoritoUseCaseImp implements SalvarCarroFavoritoUseCase {
-
   final SalvarCarroFavoritoRepository _salvarCarroFavoritoRepository;
 
   SalvarCarroFavoritoUseCaseImp(this._salvarCarroFavoritoRepository);
 
   @override
-  Future <bool> call(CarroEntity carroEntity) async {
+  Future<bool> call(CarroEntity carroEntity) async {
     carroEntity.carroExportivo();
     return await _salvarCarroFavoritoRepository(carroEntity);
   }
-} 
+}

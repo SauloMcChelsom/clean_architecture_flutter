@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MovieController {
- /*
+  /*
   final GetMoviesUseCase _getMoviesUseCase;
 
   MovieController(this._getMoviesUseCase){

@@ -2,8 +2,8 @@
 //flutter run --dart-define ENV=homolog
 
 abstract class AppConfig {
- String get REQUEST_CAR_LIST;
- String REQUEST_IMG(String img);
+  String get REQUEST_CAR_LIST;
+  String REQUEST_IMG(String img);
 }
 
 class ProdConfig implements AppConfig {
@@ -13,7 +13,6 @@ class ProdConfig implements AppConfig {
   @override
   String REQUEST_IMG(String img) => 'https://image.tmb.org/t/p/w500/$img';
 }
-
 
 class HomologConfig implements AppConfig {
   @override
@@ -35,20 +34,20 @@ class API {
   static AppConfig get url {
     const environmentParameter = String.fromEnvironment('ENV');
     switch (environmentParameter) {
-      case 'prod': 
+      case 'prod':
         return ProdConfig();
-      case 'homolog': 
+      case 'homolog':
         return HomologConfig();
-      case 'dev': 
+      case 'dev':
         return DevelopConfig();
-      default: 
-       return DevelopConfig();
+      default:
+        return DevelopConfig();
     }
   }
 }
 
 class Test {
-  Test(){
+  Test() {
     print(API.url.REQUEST_CAR_LIST);
     print(API.url.REQUEST_IMG(''));
   }

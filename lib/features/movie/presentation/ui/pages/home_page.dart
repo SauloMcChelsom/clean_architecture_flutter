@@ -4,18 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}): super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
-  
 }
 
-class  _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> {
   late final MovieController _controller;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _controller = GetIt.I.get<MovieController>();
   }
@@ -30,4 +29,3 @@ class  _HomePageState extends State<HomePage> {
     );
   }
 }
-

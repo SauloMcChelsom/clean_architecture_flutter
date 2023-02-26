@@ -8,28 +8,23 @@ class GetCarrosPorCorLocalDateSourceImp implements GetCarrosPorCorDateSource {
 
   GetCarrosPorCorLocalDateSourceImp(this._httpService);
 
-  final jsonany = {
-    'placa': 'QWE',
-    'quantidadeDePortas': 2,
-    'ValorFinal': 2000.00
-  };
+  final jsonany = {'placa': 'QWE', 'quantidadeDePortas': 2, 'ValorFinal': 2000.00};
 
   @override
-  CarroDto call(String cor){
-    if(cor.contains('vermelho')){
+  CarroDto call(String cor) {
+    if (cor.contains('vermelho')) {
       return CarroDto.fromMap(jsonany);
     }
     return CarroDto.fromMap(jsonany);
   }
 
   Future car(String cor) async {
-    try{
+    try {
       await Future.delayed(Duration(seconds: 3));
       var result = await _httpService.get(API.url.REQUEST_CAR_LIST);
       return CarroDto.fromMap(result.data);
     } catch (e) {
-     return  Exception('Falha no datasource');
+      return Exception('Falha no datasource');
     }
   }
-
 }

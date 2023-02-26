@@ -6,9 +6,7 @@ import 'package:flutter/material.dart';
 void main() {
   Cars.initialize();
   Movies.initialize();
-  runApp(
-    MaterialApp(
-      home: CarroPage(),
-    )
-  );
+  runApp(MaterialApp(
+    home: CarroPage(),
+  ));
 }

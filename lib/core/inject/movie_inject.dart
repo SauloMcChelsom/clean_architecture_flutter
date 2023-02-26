@@ -3,12 +3,10 @@ import 'package:clean_architecture_flutter/core/domain/services/http_service.dar
 import 'package:get_it/get_it.dart';
 
 class Movies {
-  static initialize(){
+  static initialize() {
     GetIt getIt = GetIt.instance;
 
     // core
-    getIt.registerLazySingleton<HttpService>(
-      () => DioHttpServiceImp()
-    );
+    getIt.registerLazySingleton<HttpService>(() => DioHttpServiceImp());
   }
 }

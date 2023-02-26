@@ -7,31 +7,29 @@ import 'package:flutter_test/flutter_test.dart';
 class SalvarCarroFavoritoRepositoryImp implements SalvarCarroFavoritoRepository {
   @override
   Future<bool> call(CarroEntity carroEntity) async {
-    if(carroEntity.valor > 0){
+    if (carroEntity.valor > 0) {
       return true;
     }
     return false;
   }
-
 }
 
 void main() {
-
   test('Espero que salve o carro com sucesso', () async {
-   SalvarCarroFavoritoUseCase useCase = SalvarCarroFavoritoUseCaseImp(SalvarCarroFavoritoRepositoryImp());
+    SalvarCarroFavoritoUseCase useCase = SalvarCarroFavoritoUseCaseImp(SalvarCarroFavoritoRepositoryImp());
 
-   var carro = CarroEntity(placa: 'ABC', qtdPortas: 2, valor: 1);
-   var result = await useCase(carro);
+    var carro = CarroEntity(placa: 'ABC', qtdPortas: 2, valor: 1);
+    var result = await useCase(carro);
 
     expect(result, true);
   });
 
   test('Espero que não salve o carro quando valor for manor ou igual que zero', () async {
-   SalvarCarroFavoritoUseCase useCase = SalvarCarroFavoritoUseCaseImp(SalvarCarroFavoritoRepositoryImp());
+    SalvarCarroFavoritoUseCase useCase = SalvarCarroFavoritoUseCaseImp(SalvarCarroFavoritoRepositoryImp());
 
-   var carro = CarroEntity(placa: 'ABC', qtdPortas: 2, valor: 0);
-   var result = await useCase(carro);
+    var carro = CarroEntity(placa: 'ABC', qtdPortas: 2, valor: 0);
+    var result = await useCase(carro);
 
     expect(result, false);
   });
-} 
+}

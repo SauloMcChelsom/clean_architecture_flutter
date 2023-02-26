@@ -1,0 +1,31 @@
+{
+  "editor.defaultFormatter": "Dart-Code.flutter",
+  "dart.enableSdkFormatter": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "workbench.colorTheme": "Dracula",
+  "workbench.iconTheme": "vscode-icons",
+  "dart.flutterHotReloadOnSave": "allIfDirty",
+  "editor.accessibilitySupport": "off",
+  "workbench.colorCustomizations": {
+    "editorLineNumber.foreground": "#9c32ff",
+  },
+  "dart.lineLength": 150,
+  "[dart]": {
+    "editor.tabSize": 2,
+    "editor.rulers": [
+      150
+    ],
+    "editor.detectIndentation": false,
+    "editor.selectionHighlight": false,
+    "editor.insertSpaces": true, 
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.suggestSelection": "first",
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": false,
+  },
+  "editor.fontSize": 14,
+  "editor.fontFamily": "Consolas, 'Courier New', monospace",
+  "editor.cursorStyle": "line",
+}

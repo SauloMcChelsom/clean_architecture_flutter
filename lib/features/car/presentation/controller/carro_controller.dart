@@ -6,16 +6,13 @@ class CarroController {
   final GetCarrosPorCorUseCase _getCarrosPorCorUseCase;
   final SalvarCarroFavoritoUseCase _salvarCarroFavoritoUseCase;
 
-  CarroController(
-    this._getCarrosPorCorUseCase,
-    this._salvarCarroFavoritoUseCase
-  ) {
+  CarroController(this._getCarrosPorCorUseCase, this._salvarCarroFavoritoUseCase) {
     getCarrosPorCor('vermelho');
   }
 
   late CarroEntity carro;
 
-  getCarrosPorCor(String cor){
+  getCarrosPorCor(String cor) {
     carro = _getCarrosPorCorUseCase(cor);
   }
 
