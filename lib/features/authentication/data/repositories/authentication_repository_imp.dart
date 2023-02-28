@@ -1,6 +1,6 @@
+import 'package:clean_architecture_flutter/core/domain/entities/response_entity.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/datasources/local/authentication_local_datasource.dart';
 import 'package:clean_architecture_flutter/features/authentication/domain/entities/user_entity.dart';
-import 'package:clean_architecture_flutter/features/authentication/domain/entities/auth_entity.dart';
 import 'package:clean_architecture_flutter/features/authentication/domain/repositories/authentication_repository.dart';
 
 class AuthenticationRepositoryImp implements AuthenticationRepository {
@@ -9,8 +9,8 @@ class AuthenticationRepositoryImp implements AuthenticationRepository {
   AuthenticationRepositoryImp({required this.localDatasource});
 
   @override
-  Future<void> authenticate(AuthEntity auth) async {
-    final UserEntity user = await localDatasource.signInWithEmailAndPassword(auth);
+  Future<ResponseEntity> authenticate({required String username, required String password}) async {
+    return await localDatasource.signInWithEmailAndPassword(username: username, password: password);
   }
 
   @override
