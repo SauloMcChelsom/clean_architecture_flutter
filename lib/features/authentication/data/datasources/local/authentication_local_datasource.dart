@@ -3,17 +3,52 @@ import 'package:clean_architecture_flutter/features/authentication/data/models/r
 import 'package:clean_architecture_flutter/features/authentication/data/models/token_model.dart';
 import 'package:clean_architecture_flutter/features/authentication/domain/entities/user_entity.dart';
 
-const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjozLCJ1aWQiOiIzYjRjZWJhYS1jYjc1LTRjNzAtOGUyYS1lNzdlOTU1NzEwZTUiLCJlbWFpbCI6IjIwMzMueHl6QGdtYWlsLmNvbSIsIm5hbWUiOiJzYXVsbyIsInByb3ZpZGVycyI6ImxvY2FsLmNvbSIsImxhc3RfbG9naW4iOiIyMDIzLTAyLTI1VDE4OjM5OjU5LjY1NloiLCJpc19hY3RpdmUiOmZhbHNlLCJ1cGRhdGVkX2F0IjpudWxsLCJ0aW1lc3RhbXAiOiIyMDIzLTAyLTIzVDE4OjAwOjM0LjEzOVoiLCJyb2xlIjoidXNlciJ9LCJpYXQiOjE2NzczNTA3ODYsImV4cCI6MTY3NzUzMDc4Nn0.Jy9s-jcgk0cV9SWZwmpQx_IC5j7wggfQU3p4PK7nxj8';
-
 class AuthenticationLocalDatasource {
   List<UserEntity> user = [];
+  List<TokenModel> token = [];
+  String access_token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjozLCJ1aWQiOiIzYjRjZWJhYS1jYjc1LTRjNzAtOGUyYS1lNzdlOTU1NzEwZTUiLCJlbWFpbCI6IjIwMzMueHl6QGdtYWlsLmNvbSIsIm5hbWUiOiJzYXVsbyIsInByb3ZpZGVycyI6ImxvY2FsLmNvbSIsImxhc3RfbG9naW4iOiIyMDIzLTAyLTI1VDE4OjM5OjU5LjY1NloiLCJpc19hY3RpdmUiOmZhbHNlLCJ1cGRhdGVkX2F0IjpudWxsLCJ0aW1lc3RhbXAiOiIyMDIzLTAyLTIzVDE4OjAwOjM0LjEzOVoiLCJyb2xlIjoidXNlciJ9LCJpYXQiOjE2NzczNTA3ODYsImV4cCI6MTY3NzUzMDc4Nn0.Jy9s-jcgk0cV9SWZwmpQx_IC5j7wggfQU3p4PK7nxj8';
 
   Future<ResponseEntity> register({required String firstName, required String lastName, required String email, required String password}) async {
-    user.add(UserEntity(
-        email: email, password: password, name: '$firstName $lastName', providers: 'local.com', id: 3, uid: '3b4cebaa-cb75-4c70-8e2a-e77e955710e5'));
     late ResponseEntity res;
-    try {} catch (e) {
+    try {
+      var user_entity = UserEntity(
+          email: email, password: password, name: '$firstName $lastName', providers: 'local.com', id: 3, uid: '3b4cebaa-cb75-4c70-8e2a-e77e955710e5');
+      if (user_entity.passwordMinLength() == false) {
+        res = ResponseEntity(
+            statusCode: 400,
+            message: 'password should be at least 8 characters',
+            code: 'FAILED',
+            description: '',
+            results: user,
+            timestamp: DateTime.now().toString());
+        return res;
+      }
+      if (user_entity.passwordMaxLength() == false) {
+        res = ResponseEntity(
+            statusCode: 400,
+            message: 'password should be at max 12 characters',
+            code: 'FAILED',
+            description: '',
+            results: user,
+            timestamp: DateTime.now().toString());
+        return res;
+      }
+      user.add(user_entity);
+      if (user[0].email.isNotEmpty) {
+        res = ResponseEntity(
+            statusCode: 200, message: 'successful register', code: 'SUCCESS', description: '', results: user, timestamp: DateTime.now().toString());
+        return res;
+      }
+      res = ResponseEntity(
+          statusCode: 400,
+          message: 'it was not possible to register the user',
+          code: 'FAILED',
+          description: '',
+          results: user,
+          timestamp: DateTime.now().toString());
+      return res;
+    } catch (e) {
       res = ResponseEntity(
           statusCode: 500,
           message: 'erro in register user',
@@ -31,7 +66,8 @@ class AuthenticationLocalDatasource {
       if (username == user[0].email && password == user[0].password) {
         var refresh_token = TokenRefreshTokenModel(
             id: 3, token: "5915c1b8-08d0-4e27-a877-8d3c059cdc26", expires_in: "1679769985941", timestamp: "2023-02-25T21:39:59.820Z", user_id: 3);
-        var model = TokenModel(access_token: token, refresh_token: refresh_token);
+        var model = TokenModel(access_token: access_token, refresh_token: refresh_token);
+        token.add(model);
         res = ResponseEntity(
             statusCode: 200,
             message: 'successful authentication',
@@ -141,7 +177,7 @@ class AuthenticationLocalDatasource {
     try {
       if (user[0].email.isNotEmpty) {
         return ResponseEntity(
-            statusCode: 200, message: 'user authenticated', code: 'SUCCESS', description: '', results: [true], timestamp: DateTime.now().toString());
+            statusCode: 200, message: 'user authenticated', code: 'SUCCESS', description: '', results: token, timestamp: DateTime.now().toString());
       }
       return ResponseEntity(
           statusCode: 400, message: 'user not authenticated', code: 'FAILED', description: '', results: [], timestamp: DateTime.now().toString());
@@ -161,6 +197,8 @@ class AuthenticationLocalDatasource {
     late ResponseEntity res;
     try {
       user = [];
+      token = [];
+      access_token = '';
       return ResponseEntity(
           statusCode: 200, message: 'user logout with success', code: 'SUCCESS', description: '', results: [], timestamp: DateTime.now().toString());
     } catch (e) {

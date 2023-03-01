@@ -25,7 +25,15 @@ class UserEntity {
       this.role = 'user'});
 
   bool passwordMinLength() {
-    if (password.length == 8) {
+    if (password.length >= 8) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool passwordMaxLength() {
+    if (password.length <= 12) {
       return true;
     } else {
       return false;
