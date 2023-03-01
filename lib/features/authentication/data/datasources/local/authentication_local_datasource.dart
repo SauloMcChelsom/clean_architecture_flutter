@@ -9,9 +9,20 @@ const token =
 class AuthenticationLocalDatasource {
   List<UserEntity> user = [];
 
-  Future<void> register({required String firstName, required String lastName, required String email, required String password}) async {
+  Future<ResponseEntity> register({required String firstName, required String lastName, required String email, required String password}) async {
     user.add(UserEntity(
         email: email, password: password, name: '$firstName $lastName', providers: 'local.com', id: 3, uid: '3b4cebaa-cb75-4c70-8e2a-e77e955710e5'));
+    late ResponseEntity res;
+    try {} catch (e) {
+      res = ResponseEntity(
+          statusCode: 500,
+          message: 'erro in register user',
+          code: 'EXCEPTION',
+          description: e.toString(),
+          results: [],
+          timestamp: DateTime.now().toString());
+    }
+    return res;
   }
 
   Future<ResponseEntity> signInWithEmailAndPassword({required String username, required String password}) async {
@@ -63,38 +74,104 @@ class AuthenticationLocalDatasource {
     return res;
   }
 
-  Future<bool> isEmailAlreadyExists(String email) async {
-    bool res = false;
-    for (var i in user) {
-      if (i.email == email) {
-        res = true;
+  Future<ResponseEntity> isEmailAlreadyExists(String email) async {
+    late ResponseEntity res;
+    try {
+      for (var item in user) {
+        if (item.email == email) {
+          return ResponseEntity(
+              statusCode: 200, message: 'email found', code: 'SUCCESS', description: '', results: [], timestamp: DateTime.now().toString());
+        }
       }
+      return ResponseEntity(
+          statusCode: 400, message: 'email not found', code: 'FAILED', description: '', results: [], timestamp: DateTime.now().toString());
+    } catch (e) {
+      res = ResponseEntity(
+          statusCode: 500,
+          message: 'error find email',
+          code: 'EXCEPTION',
+          description: e.toString(),
+          results: [],
+          timestamp: DateTime.now().toString());
     }
     return res;
   }
 
-  Future<UserEntity> getUser() async {
-    return user[0];
-  }
-
-  Future<void> forgotPassword(String email) async {
-    //send email
-    await Future.delayed(Duration(seconds: 3), () {});
-  }
-
-  Future<bool> isAuthenticated() async {
-    bool res = false;
+  Future<ResponseEntity> getUser() async {
+    late ResponseEntity res;
     try {
       if (user[0].email.isNotEmpty) {
-        res = true;
+        return ResponseEntity(
+            statusCode: 200, message: 'email found', code: 'SUCCESS', description: '', results: user, timestamp: DateTime.now().toString());
       }
-      // ignore: empty_catches
-    } catch (e) {}
-
+      return ResponseEntity(
+          statusCode: 400, message: 'email not found', code: 'FAILED', description: '', results: [], timestamp: DateTime.now().toString());
+    } catch (e) {
+      res = ResponseEntity(
+          statusCode: 500,
+          message: 'error get user',
+          code: 'EXCEPTION',
+          description: e.toString(),
+          results: [],
+          timestamp: DateTime.now().toString());
+    }
     return res;
   }
 
-  Future<void> logout() async {
-    user = [];
+  Future<ResponseEntity> forgotPassword(String email) async {
+    late ResponseEntity res;
+    try {
+      await Future.delayed(Duration(seconds: 3), () {});
+      return ResponseEntity(
+          statusCode: 200, message: 'email send with success', code: 'SUCCESS', description: '', results: user, timestamp: DateTime.now().toString());
+    } catch (e) {
+      res = ResponseEntity(
+          statusCode: 500,
+          message: 'error in send email',
+          code: 'EXCEPTION',
+          description: e.toString(),
+          results: [],
+          timestamp: DateTime.now().toString());
+    }
+    return res;
+  }
+
+  Future<ResponseEntity> isAuthenticated() async {
+    late ResponseEntity res;
+    try {
+      if (user[0].email.isNotEmpty) {
+        return ResponseEntity(
+            statusCode: 200, message: 'user authenticated', code: 'SUCCESS', description: '', results: [true], timestamp: DateTime.now().toString());
+      }
+      return ResponseEntity(
+          statusCode: 400, message: 'user not authenticated', code: 'FAILED', description: '', results: [], timestamp: DateTime.now().toString());
+    } catch (e) {
+      res = ResponseEntity(
+          statusCode: 500,
+          message: 'error in get user authenticated',
+          code: 'EXCEPTION',
+          description: e.toString(),
+          results: [],
+          timestamp: DateTime.now().toString());
+    }
+    return res;
+  }
+
+  Future<ResponseEntity> logout() async {
+    late ResponseEntity res;
+    try {
+      user = [];
+      return ResponseEntity(
+          statusCode: 200, message: 'user logout with success', code: 'SUCCESS', description: '', results: [], timestamp: DateTime.now().toString());
+    } catch (e) {
+      res = ResponseEntity(
+          statusCode: 500,
+          message: 'error in logout user',
+          code: 'EXCEPTION',
+          description: e.toString(),
+          results: [],
+          timestamp: DateTime.now().toString());
+    }
+    return res;
   }
 }

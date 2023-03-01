@@ -1,5 +1,5 @@
+import 'package:clean_architecture_flutter/core/domain/entities/response_entity.dart';
 import 'package:clean_architecture_flutter/core/domain/usecase/usecase.dart';
-import 'package:clean_architecture_flutter/features/authentication/domain/entities/user_entity.dart';
 import 'package:clean_architecture_flutter/features/authentication/domain/repositories/authentication_repository.dart';
 
 class GetCurrentUserUseCase implements TUseCase<void> {
@@ -7,7 +7,7 @@ class GetCurrentUserUseCase implements TUseCase<void> {
   GetCurrentUserUseCase(this._authenticationRepository);
 
   @override
-  Future<UserEntity> call() async {
+  Future<ResponseEntity> call() async {
     return _authenticationRepository.getCurrentUser();
   }
 }
