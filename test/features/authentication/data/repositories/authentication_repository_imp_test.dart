@@ -1,4 +1,3 @@
-import 'package:clean_architecture_flutter/core/domain/entities/response_entity.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/datasources/local/authentication_local_datasource.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/repositories/authentication_repository_imp.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -40,21 +39,21 @@ void main() {
 
   test('Should register one user', () async {
     const String email = 'saulo@mail.com';
-    await todoRepositoryImpl.register(email: email, firstName: 'saulo', lastName: 'silva', password: '123');
+    await todoRepositoryImpl.register(email: email, firstName: 'saulo', lastName: 'silva', password: '123456789');
 
     //when
-    final result = await todoRepositoryImpl.authenticate(username: email, password: '123');
+    final result = await todoRepositoryImpl.authenticate(username: email, password: '123456789');
 
     //then
     expect(result.message, 'successful authentication');
   });
 
-  test('Should auth error password', () async {
+  test('Should failed password does not match', () async {
     const String email = 'saulo@mail.com';
-    await todoRepositoryImpl.register(email: email, firstName: 'saulo', lastName: 'silva', password: '123');
+    await todoRepositoryImpl.register(email: email, firstName: 'saulo', lastName: 'silva', password: '123456789');
 
     //when
-    final result = await todoRepositoryImpl.authenticate(username: email, password: '1233');
+    final result = await todoRepositoryImpl.authenticate(username: email, password: 'abcderc');
 
     //then
     expect(result.message, 'password does not match');
@@ -62,12 +61,88 @@ void main() {
 
   test('Should user not exist', () async {
     const String email = 'saulo@mail.com';
-    await todoRepositoryImpl.register(email: email, firstName: 'saulo', lastName: 'silva', password: '123');
+    await todoRepositoryImpl.register(email: email, firstName: 'saulo', lastName: 'silva', password: '123456789');
 
     //when
-    final result = await todoRepositoryImpl.authenticate(username: 'saulosilva@mail.com', password: '1233');
+    final result = await todoRepositoryImpl.authenticate(username: 'abcde@mail.com', password: '123456789');
 
     //then
     expect(result.message, 'user does not exist');
+  });
+
+  test('Should check if email is in use', () async {
+    const String email = 'saulo@mail.com';
+    await todoRepositoryImpl.register(email: email, firstName: 'saulo', lastName: 'silva', password: '123456789');
+
+    final result = await todoRepositoryImpl.register(email: email, firstName: 'saulo', lastName: 'silva', password: '123456789');
+
+    //then
+    expect(result.message, 'email already in use');
+  });
+
+  test('Should send email forgot password', () async {
+    const String email = 'saulo@mail.com';
+    final result = await todoRepositoryImpl.forgotPassword(email);
+    //then
+    expect(result.message, 'email send with success');
+  });
+
+  test('Should get current user', () async {
+    const String email = 'saulo@mail.com';
+    await todoRepositoryImpl.register(email: email, firstName: 'saulo', lastName: 'silva', password: '123456789');
+
+    await todoRepositoryImpl.authenticate(username: email, password: '123456789');
+
+    final result = await todoRepositoryImpl.getCurrentUser();
+    //then
+    expect(result.message, 'user found');
+  });
+
+  test('Should failed get current user', () async {
+    final result = await todoRepositoryImpl.getCurrentUser();
+    //then
+    expect(result.message, 'user not found');
+  });
+
+  test('Should check if is Authenticated', () async {
+    const String email = 'saulo@mail.com';
+    await todoRepositoryImpl.register(email: email, firstName: 'saulo', lastName: 'silva', password: '123456789');
+
+    await todoRepositoryImpl.authenticate(username: email, password: '123456789');
+    final result = await todoRepositoryImpl.isAuthenticated();
+    //then
+    expect(result.message, 'user authenticated');
+  });
+
+  test('Should failed check if is Authenticated', () async {
+    final result = await todoRepositoryImpl.isAuthenticated();
+    //then
+    expect(result.message, 'user not authenticated');
+  });
+
+  test('Should make logout', () async {
+    const String email = 'saulo@mail.com';
+    await todoRepositoryImpl.register(email: email, firstName: 'saulo', lastName: 'silva', password: '123456789');
+    await todoRepositoryImpl.authenticate(username: email, password: '123456789');
+
+    final result = await todoRepositoryImpl.logout();
+    //then
+    expect(result.message, 'user logout with success');
+  });
+
+  test('Should check is email already exists', () async {
+    const String email = 'saulo@mail.com';
+    await todoRepositoryImpl.register(email: email, firstName: 'saulo', lastName: 'silva', password: '123456789');
+    await todoRepositoryImpl.authenticate(username: email, password: '123456789');
+
+    final result = await todoRepositoryImpl.isEmailAlreadyExists(email);
+    //then
+    expect(result.message, 'email found');
+  });
+
+  test('Should failed is email already exists', () async {
+    final result = await todoRepositoryImpl.isEmailAlreadyExists('abcd@mail.com');
+    //then
+    expect(result.message, 'email not found');
   });
 }

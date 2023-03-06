@@ -34,6 +34,13 @@ class AuthenticationLocalDatasource {
             timestamp: DateTime.now().toString());
         return res;
       }
+      if (user.isNotEmpty) {
+        if (user[0].email == email) {
+          res = ResponseEntity(
+              statusCode: 400, message: 'email already in use', code: 'FAILED', description: '', results: user, timestamp: DateTime.now().toString());
+          return res;
+        }
+      }
       user.add(user_entity);
       if (user[0].email.isNotEmpty) {
         res = ResponseEntity(
@@ -64,7 +71,7 @@ class AuthenticationLocalDatasource {
     late ResponseEntity res;
     try {
       if (username == user[0].email && password == user[0].password) {
-        var refresh_token = TokenRefreshTokenModel(
+        var refresh_token = TokenRefreshModel(
             id: 3, token: "5915c1b8-08d0-4e27-a877-8d3c059cdc26", expires_in: "1679769985941", timestamp: "2023-02-25T21:39:59.820Z", user_id: 3);
         var model = TokenModel(access_token: access_token, refresh_token: refresh_token);
         token.add(model);
@@ -87,7 +94,7 @@ class AuthenticationLocalDatasource {
             timestamp: DateTime.now().toString());
         return res;
       }
-      if (username != user[0].email && password != user[0].password) {
+      if (username != user[0].email) {
         res = ResponseEntity(
             statusCode: 400,
             message: 'user does not exist',
@@ -136,12 +143,12 @@ class AuthenticationLocalDatasource {
   Future<ResponseEntity> getUser() async {
     late ResponseEntity res;
     try {
-      if (user[0].email.isNotEmpty) {
+      if (user.isNotEmpty) {
         return ResponseEntity(
-            statusCode: 200, message: 'email found', code: 'SUCCESS', description: '', results: user, timestamp: DateTime.now().toString());
+            statusCode: 200, message: 'user found', code: 'SUCCESS', description: '', results: user, timestamp: DateTime.now().toString());
       }
       return ResponseEntity(
-          statusCode: 400, message: 'email not found', code: 'FAILED', description: '', results: [], timestamp: DateTime.now().toString());
+          statusCode: 400, message: 'user not found', code: 'FAILED', description: '', results: [], timestamp: DateTime.now().toString());
     } catch (e) {
       res = ResponseEntity(
           statusCode: 500,
@@ -175,7 +182,7 @@ class AuthenticationLocalDatasource {
   Future<ResponseEntity> isAuthenticated() async {
     late ResponseEntity res;
     try {
-      if (user[0].email.isNotEmpty) {
+      if (user.isNotEmpty) {
         return ResponseEntity(
             statusCode: 200, message: 'user authenticated', code: 'SUCCESS', description: '', results: token, timestamp: DateTime.now().toString());
       }

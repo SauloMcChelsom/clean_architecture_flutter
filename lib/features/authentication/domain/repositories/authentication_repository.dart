@@ -1,6 +1,4 @@
 import 'package:clean_architecture_flutter/core/domain/entities/response_entity.dart';
-import 'package:clean_architecture_flutter/features/authentication/domain/entities/token_entity.dart';
-import 'package:clean_architecture_flutter/features/authentication/domain/entities/user_entity.dart';
 
 abstract class AuthenticationRepository {
   Future<ResponseEntity> register({required String firstName, required String lastName, required String email, required String password});

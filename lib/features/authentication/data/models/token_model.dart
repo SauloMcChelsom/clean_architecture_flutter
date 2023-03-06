@@ -3,15 +3,16 @@ import 'package:clean_architecture_flutter/features/authentication/domain/entiti
 
 class TokenModel extends TokenEntity {
   final String access_token;
-  final TokenRefreshTokenModel refresh_token;
+  final TokenRefreshModel refresh_token;
 
   TokenModel({required this.access_token, required this.refresh_token}) : super(access_token: access_token, refresh_token: refresh_token);
 
   Map toMap() {
-    return {'access_token': this.access_token, 'refresh_token': this.refresh_token};
+    return {'access_token': this.access_token, 'refresh_token': this.refresh_token.toMap()};
   }
 
   static TokenModel fromMap(Map map) {
-    return TokenModel(access_token: map['access_token'], refresh_token: map['refresh_token']);
+    var refre = TokenRefreshModel.fromMap(map['refresh_token']);
+    return TokenModel(access_token: map['access_token'], refresh_token: refre);
   }
 }
