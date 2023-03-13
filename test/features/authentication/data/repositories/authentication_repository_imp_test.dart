@@ -18,7 +18,7 @@ void main() {
     final result = await todoRepositoryImpl.register(email: email, firstName: 'saulo', lastName: 'silva', password: '123456789de');
 
     //then
-    expect(result.message, 'successful register');
+    expect(result.getMessage(), 'successful register');
   });
 
   test('Should failed password min 8 characters', () async {
@@ -26,7 +26,7 @@ void main() {
     final result = await todoRepositoryImpl.register(email: email, firstName: 'saulo', lastName: 'silva', password: '123');
 
     //then
-    expect(result.message, 'password should be at least 8 characters');
+    expect(result.getMessage, 'password should be at least 8 characters');
   });
 
   test('Should failed password max 12 characters', () async {
@@ -34,7 +34,7 @@ void main() {
     final result = await todoRepositoryImpl.register(email: email, firstName: 'saulo', lastName: 'silva', password: '1255555555555555555555553');
 
     //then
-    expect(result.message, 'password should be at max 12 characters');
+    expect(result.getMessage, 'password should be at max 12 characters');
   });
 
   test('Should register one user', () async {
@@ -45,7 +45,7 @@ void main() {
     final result = await todoRepositoryImpl.authenticate(username: email, password: '123456789');
 
     //then
-    expect(result.message, 'successful authentication');
+    expect(result.getMessage, 'successful authentication');
   });
 
   test('Should failed password does not match', () async {
@@ -56,7 +56,7 @@ void main() {
     final result = await todoRepositoryImpl.authenticate(username: email, password: 'abcderc');
 
     //then
-    expect(result.message, 'password does not match');
+    expect(result.getMessage, 'password does not match');
   });
 
   test('Should user not exist', () async {
@@ -67,7 +67,7 @@ void main() {
     final result = await todoRepositoryImpl.authenticate(username: 'abcde@mail.com', password: '123456789');
 
     //then
-    expect(result.message, 'user does not exist');
+    expect(result.getMessage, 'user does not exist');
   });
 
   test('Should check if email is in use', () async {
@@ -77,14 +77,14 @@ void main() {
     final result = await todoRepositoryImpl.register(email: email, firstName: 'saulo', lastName: 'silva', password: '123456789');
 
     //then
-    expect(result.message, 'email already in use');
+    expect(result.getMessage, 'email already in use');
   });
 
   test('Should send email forgot password', () async {
     const String email = 'saulo@mail.com';
     final result = await todoRepositoryImpl.forgotPassword(email);
     //then
-    expect(result.message, 'email send with success');
+    expect(result.getMessage, 'email send with success');
   });
 
   test('Should get current user', () async {
@@ -95,13 +95,13 @@ void main() {
 
     final result = await todoRepositoryImpl.getCurrentUser();
     //then
-    expect(result.message, 'user found');
+    expect(result.getMessage, 'user found');
   });
 
   test('Should failed get current user', () async {
     final result = await todoRepositoryImpl.getCurrentUser();
     //then
-    expect(result.message, 'user not found');
+    expect(result.getMessage, 'user not found');
   });
 
   test('Should check if is Authenticated', () async {
@@ -111,13 +111,13 @@ void main() {
     await todoRepositoryImpl.authenticate(username: email, password: '123456789');
     final result = await todoRepositoryImpl.isAuthenticated();
     //then
-    expect(result.message, 'user authenticated');
+    expect(result.getMessage, 'user authenticated');
   });
 
   test('Should failed check if is Authenticated', () async {
     final result = await todoRepositoryImpl.isAuthenticated();
     //then
-    expect(result.message, 'user not authenticated');
+    expect(result.getMessage, 'user not authenticated');
   });
 
   test('Should make logout', () async {
@@ -127,7 +127,7 @@ void main() {
 
     final result = await todoRepositoryImpl.logout();
     //then
-    expect(result.message, 'user logout with success');
+    expect(result.getMessage, 'user logout with success');
   });
 
   test('Should check is email already exists', () async {
@@ -137,12 +137,12 @@ void main() {
 
     final result = await todoRepositoryImpl.isEmailAlreadyExists(email);
     //then
-    expect(result.message, 'email found');
+    expect(result.getMessage, 'email found');
   });
 
   test('Should failed is email already exists', () async {
     final result = await todoRepositoryImpl.isEmailAlreadyExists('abcd@mail.com');
     //then
-    expect(result.message, 'email not found');
+    expect(result.getMessage, 'email not found');
   });
 }

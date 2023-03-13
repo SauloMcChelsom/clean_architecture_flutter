@@ -1,9 +1,13 @@
 import 'package:clean_architecture_flutter/core/domain/entities/response_entity.dart';
+import 'package:clean_architecture_flutter/core/services/http/http_service.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/models/refresh_token_model.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/models/token_model.dart';
 import 'package:clean_architecture_flutter/features/authentication/domain/entities/user_entity.dart';
 
-class AuthenticationLocalDatasource {
+class AuthenticationRemoteDatasource {
+  final IHttpService http;
+  AuthenticationRemoteDatasource(this.http);
+
   List<UserEntity> user = [];
   List<TokenAccessModel> token = [];
   String access_token =
@@ -70,6 +74,14 @@ class AuthenticationLocalDatasource {
   Future<ResponseEntity> signInWithEmailAndPassword({required String username, required String password}) async {
     late ResponseEntity res;
     try {
+      var data = '{"email": "2033.xyz@gmail.com", "password": "123456789"}';
+      ResponseEntity response = await http.post('http://localhost:3000/v1/public/auth/sign-in', data: data);
+      print(response.getStatusCode());
+      print(response.getMessage());
+      print(response.getCode());
+      print(response.getDescription());
+      print(response.getResults());
+
       if (username == user[0].email && password == user[0].password) {
         var refresh_token = TokenRefreshModel(
             id: 3, token: "5915c1b8-08d0-4e27-a877-8d3c059cdc26", expires_in: "1679769985941", timestamp: "2023-02-25T21:39:59.820Z", user_id: 3);
