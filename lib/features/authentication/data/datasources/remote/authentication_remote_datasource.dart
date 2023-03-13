@@ -9,7 +9,7 @@ class AuthenticationRemoteDatasource {
   AuthenticationRemoteDatasource(this.http);
 
   List<UserEntity> user = [];
-  List<TokenAccessModel> token = [];
+  List<TokenModel> token = [];
   String access_token =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjozLCJ1aWQiOiIzYjRjZWJhYS1jYjc1LTRjNzAtOGUyYS1lNzdlOTU1NzEwZTUiLCJlbWFpbCI6IjIwMzMueHl6QGdtYWlsLmNvbSIsIm5hbWUiOiJzYXVsbyIsInByb3ZpZGVycyI6ImxvY2FsLmNvbSIsImxhc3RfbG9naW4iOiIyMDIzLTAyLTI1VDE4OjM5OjU5LjY1NloiLCJpc19hY3RpdmUiOmZhbHNlLCJ1cGRhdGVkX2F0IjpudWxsLCJ0aW1lc3RhbXAiOiIyMDIzLTAyLTIzVDE4OjAwOjM0LjEzOVoiLCJyb2xlIjoidXNlciJ9LCJpYXQiOjE2NzczNTA3ODYsImV4cCI6MTY3NzUzMDc4Nn0.Jy9s-jcgk0cV9SWZwmpQx_IC5j7wggfQU3p4PK7nxj8';
 
@@ -85,7 +85,7 @@ class AuthenticationRemoteDatasource {
       if (username == user[0].email && password == user[0].password) {
         var refresh_token = TokenRefreshModel(
             id: 3, token: "5915c1b8-08d0-4e27-a877-8d3c059cdc26", expires_in: "1679769985941", timestamp: "2023-02-25T21:39:59.820Z", user_id: 3);
-        var model = TokenAccessModel(access_token: access_token, refresh_token: refresh_token);
+        var model = TokenModel(access_token: access_token, refresh_token: refresh_token);
         token.add(model);
         res = ResponseEntity(
             statusCode: 200,

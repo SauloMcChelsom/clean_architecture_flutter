@@ -13,13 +13,13 @@ void main() {
     String access_token =
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjozLCJ1aWQiOiIzYjRjZWJhYS1jYjc1LTRjNzAtOGUyYS1lNzdlOTU1NzEwZTUiLCJlbWFpbCI6IjIwMzMueHl6QGdtYWlsLmNvbSIsIm5hbWUiOiJzYXVsbyIsInByb3ZpZGVycyI6ImxvY2FsLmNvbSIsImxhc3RfbG9naW4iOiIyMDIzLTAyLTI1VDE4OjM5OjU5LjY1NloiLCJpc19hY3RpdmUiOmZhbHNlLCJ1cGRhdGVkX2F0IjpudWxsLCJ0aW1lc3RhbXAiOiIyMDIzLTAyLTIzVDE4OjAwOjM0LjEzOVoiLCJyb2xlIjoidXNlciJ9LCJpYXQiOjE2NzczNTA3ODYsImV4cCI6MTY3NzUzMDc4Nn0.Jy9s-jcgk0cV9SWZwmpQx_IC5j7wggfQU3p4PK7nxj8';
 
-    var token_model = TokenAccessModel(access_token: access_token, refresh_token: refresh_token);
+    var token_model = TokenModel(access_token: access_token, refresh_token: refresh_token);
 
     Map<dynamic, dynamic> res = token_model.toMap();
     final tokenObject = jsonEncode(res);
     String tokenText = tokenObject.toString();
     Iterable l = [jsonDecode(tokenText)];
-    List<TokenAccessModel> token = List<TokenAccessModel>.from(l.map((model) => TokenAccessModel.fromMap(model)));
+    List<TokenModel> token = List<TokenModel>.from(l.map((model) => TokenModel.fromMap(model)));
     print(token[0].access_token);
     //then
     expect(token[0].access_token, access_token);

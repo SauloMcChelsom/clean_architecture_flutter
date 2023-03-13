@@ -52,7 +52,7 @@ class HttpService extends IHttpService {
       response_entitty.setDescription('');
       response_entitty.setMessage('successful in request method GET by HTTP');
       response_entitty.setResults([response.body]);
-      response_entitty.setStatusCode(200;
+      response_entitty.setStatusCode(200);
       response_entitty.setTimestamp();
     } catch (e) {
       response_entitty.setCode('EXCEPTION');
@@ -104,7 +104,7 @@ class HttpService extends IHttpService {
           description: '',
           message: 'successful in request method PUT by HTTP',
           results: [response.body],
-          statusCode: 200,
+          statusCode: response.statusCode,
           timestamp: DateTime.now().toString());
     } catch (e) {
       response_entitty = ResponseEntity(
@@ -132,7 +132,7 @@ class HttpService extends IHttpService {
           description: '',
           message: 'successful in request method DELETE by HTTP',
           results: [response.body],
-          statusCode: 200,
+          statusCode: response.statusCode,
           timestamp: DateTime.now().toString());
     } catch (e) {
       response_entitty = ResponseEntity(
@@ -160,7 +160,7 @@ class HttpService extends IHttpService {
           description: '',
           message: 'successful in request method PATCH by HTTP',
           results: [response.body],
-          statusCode: 200,
+          statusCode: response.statusCode,
           timestamp: DateTime.now().toString());
     } catch (e) {
       response_entitty = ResponseEntity(
@@ -191,7 +191,7 @@ class UnoHttpService extends IHttpService {
           description: '',
           message: 'successful in request method DELETE by UNO',
           results: [response.data],
-          statusCode: 200,
+          statusCode: response.status,
           timestamp: DateTime.now().toString());
     } catch (e) {
       response_entitty = ResponseEntity(
@@ -218,7 +218,7 @@ class UnoHttpService extends IHttpService {
           description: '',
           message: 'successful in request method GET by UNO',
           results: [response.data],
-          statusCode: 200,
+          statusCode: response.status,
           timestamp: DateTime.now().toString());
     } catch (e) {
       response_entitty = ResponseEntity(
@@ -245,7 +245,7 @@ class UnoHttpService extends IHttpService {
           description: '',
           message: 'successful in request method PATCH by UNO',
           results: [response.data],
-          statusCode: 200,
+          statusCode: response.status,
           timestamp: DateTime.now().toString());
     } catch (e) {
       response_entitty = ResponseEntity(
@@ -272,7 +272,7 @@ class UnoHttpService extends IHttpService {
           description: '',
           message: 'successful in request method POST by UNO',
           results: [response.data],
-          statusCode: 200,
+          statusCode: response.status,
           timestamp: DateTime.now().toString());
     } catch (e) {
       response_entitty = ResponseEntity(
@@ -299,7 +299,7 @@ class UnoHttpService extends IHttpService {
           description: '',
           message: 'successful in request method PUT by UNO',
           results: [response.data],
-          statusCode: 200,
+          statusCode: response.status,
           timestamp: DateTime.now().toString());
     } catch (e) {
       response_entitty = ResponseEntity(
@@ -330,7 +330,7 @@ class DioHttpService extends IHttpService {
           description: '',
           message: 'successful in request method DELETE by DIO',
           results: [response.data],
-          statusCode: 200,
+          statusCode: response.statusCode!,
           timestamp: DateTime.now().toString());
     } catch (e) {
       response_entitty = ResponseEntity(
@@ -357,7 +357,7 @@ class DioHttpService extends IHttpService {
           description: '',
           message: 'successful in request method GET by DIO',
           results: [response.data],
-          statusCode: 200,
+          statusCode: response.statusCode!,
           timestamp: DateTime.now().toString());
     } catch (e) {
       response_entitty = ResponseEntity(
@@ -384,7 +384,7 @@ class DioHttpService extends IHttpService {
           description: '',
           message: 'successful in request method PATCH by DIO',
           results: [response.data],
-          statusCode: 200,
+          statusCode: response.statusCode!,
           timestamp: DateTime.now().toString());
     } catch (e) {
       response_entitty = ResponseEntity(
@@ -411,7 +411,7 @@ class DioHttpService extends IHttpService {
           description: '',
           message: 'successful in request method POST by DIO',
           results: [response.data],
-          statusCode: 200,
+          statusCode: response.statusCode!,
           timestamp: DateTime.now().toString());
     } catch (e) {
       response_entitty = ResponseEntity(
@@ -438,7 +438,7 @@ class DioHttpService extends IHttpService {
           description: '',
           message: 'successful in request method PUT by DIO',
           results: [response.data],
-          statusCode: 200,
+          statusCode: response.statusCode!,
           timestamp: DateTime.now().toString());
     } catch (e) {
       response_entitty = ResponseEntity(
