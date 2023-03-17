@@ -14,12 +14,55 @@ void main() {
 
   //Esta função será chamada após a execução de cada teste
   tearDown(() {});
-  test('Should check if is Authenticated', () async {
-    const String email = 'saulo@mail.com';
+  group('authentication_repository_imp.dart', () {
+    group('authenticate', () {
+      test('Should authenticate user with success [remote]', () async {
+        const String email = '2033.xyz@gmail.com';
+        //when
+        final result = await todoRepositoryImpl.authenticate(username: email, password: '123456789');
 
-    await todoRepositoryImpl.authenticate(username: email, password: '123456789');
-    final result = await todoRepositoryImpl.isAuthenticated();
-    //then
-    expect(result.getMessage, 'user authenticated');
+        //then
+        expect(result.getMessage(), 'successful authentication');
+      });
+
+      test('Should failed, user ou email not exist [remote]', () async {
+        const String email = 'saulo@mail.com';
+        //when
+        final result = await todoRepositoryImpl.authenticate(username: email, password: '123456789');
+
+        //then
+        expect(result.getMessage(), 'user does not exist');
+      });
+
+      test('Should failed, Different password [remote]', () async {
+        const String email = '2033.xyz@gmail.com';
+
+        //when
+        final result = await todoRepositoryImpl.authenticate(username: email, password: 'abcderc8');
+
+        //then
+        expect(result.getMessage(), 'password does not match');
+      });
+
+      test('Should failed, password should be at least 8 characters [remote]', () async {
+        const String email = '2033.xyz@gmail.com';
+
+        //when
+        final result = await todoRepositoryImpl.authenticate(username: email, password: 'abcderc');
+
+        //then
+        expect(result.getMessage(), 'password should be at least 8 characters');
+      });
+
+      test('Should failed, password should be at max 12 characters [remote]', () async {
+        const String email = '2033.xyz@gmail.com';
+
+        //when
+        final result = await todoRepositoryImpl.authenticate(username: email, password: 'abcdercabcdercabcderc');
+
+        //then
+        expect(result.getMessage(), 'password should be at max 12 characters');
+      });
+    });
   });
 }

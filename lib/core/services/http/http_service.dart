@@ -52,7 +52,7 @@ class HttpService extends IHttpService {
       response_entitty.setDescription('');
       response_entitty.setMessage('successful in request method GET by HTTP');
       response_entitty.setResults([response.body]);
-      response_entitty.setStatusCode(200);
+      response_entitty.setStatusCode(response.statusCode);
       response_entitty.setTimestamp();
     } catch (e) {
       response_entitty.setCode('EXCEPTION');
@@ -77,7 +77,7 @@ class HttpService extends IHttpService {
       response_entitty.setDescription('');
       response_entitty.setMessage('successful in request method POST by HTTP');
       response_entitty.setResults([response.body]);
-      response_entitty.setStatusCode(200);
+      response_entitty.setStatusCode(response.statusCode);
       response_entitty.setTimestamp();
     } catch (e) {
       response_entitty.setCode('EXCEPTION');

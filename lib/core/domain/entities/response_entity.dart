@@ -6,7 +6,7 @@ class ResponseEntity {
   String _timestamp = '';
   List<dynamic> _results = [];
 
-  ResponseEntity({statusCode, code, message, description, timestamp, results}) {
+  ResponseEntity({int statusCode = 0, String code = '', String message = '', String description = '', String timestamp = '', results}) {
     _statusCode = statusCode;
     _code = code;
     _message = message;

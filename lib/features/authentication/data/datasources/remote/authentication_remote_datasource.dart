@@ -1,6 +1,8 @@
 import 'package:clean_architecture_flutter/core/domain/entities/response_entity.dart';
 import 'package:clean_architecture_flutter/core/services/http/http_service.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/models/refresh_token_model.dart';
+import 'package:clean_architecture_flutter/features/authentication/data/models/response_dto.dart';
+import 'package:clean_architecture_flutter/features/authentication/data/models/token_dto.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/models/token_model.dart';
 import 'package:clean_architecture_flutter/features/authentication/domain/entities/user_entity.dart';
 
@@ -74,29 +76,50 @@ class AuthenticationRemoteDatasource {
   Future<ResponseEntity> signInWithEmailAndPassword({required String username, required String password}) async {
     late ResponseEntity res;
     try {
-      var data = '{"email": "2033.xyz@gmail.com", "password": "123456789"}';
-      ResponseEntity response = await http.post('http://localhost:3000/v1/public/auth/sign-in', data: data);
-      print(response.getStatusCode());
-      print(response.getMessage());
-      print(response.getCode());
-      print(response.getDescription());
-      print(response.getResults());
+      var user_entity = UserEntity(email: username, password: password, name: '', providers: '', id: 0, uid: '0');
+      if (user_entity.passwordMinLength() == false) {
+        res = ResponseEntity(
+            statusCode: 400,
+            message: 'password should be at least 8 characters',
+            code: 'FAILED',
+            description: '',
+            results: user,
+            timestamp: DateTime.now().toString());
+        return res;
+      }
+      if (user_entity.passwordMaxLength() == false) {
+        res = ResponseEntity(
+            statusCode: 400,
+            message: 'password should be at max 12 characters',
+            code: 'FAILED',
+            description: '',
+            results: user,
+            timestamp: DateTime.now().toString());
+        return res;
+      }
 
-      if (username == user[0].email && password == user[0].password) {
-        var refresh_token = TokenRefreshModel(
-            id: 3, token: "5915c1b8-08d0-4e27-a877-8d3c059cdc26", expires_in: "1679769985941", timestamp: "2023-02-25T21:39:59.820Z", user_id: 3);
-        var model = TokenModel(access_token: access_token, refresh_token: refresh_token);
-        token.add(model);
+      var data = '{"email": "$username", "password": "$password"}';
+      ResponseEntity response = await http.post('http://localhost:3000/v1/public/auth/sign-in', data: data);
+
+      if (response.getStatusCode() == 201) {
+        String token_text = response.getResults().toString();
+        var tokenObject = TokenDTO(token: token_text);
+        var tokens = tokenObject.token();
         res = ResponseEntity(
             statusCode: 200,
             message: 'successful authentication',
             code: 'SUCCESS',
             description: '',
-            results: [model.toMap()],
+            results: [tokens],
             timestamp: DateTime.now().toString());
         return res;
       }
-      if (username == user[0].email && password != user[0].password) {
+
+      var response_dto = ResponseDTO(response_text: response.getResults().toString());
+      var response_entity = ResponseEntity(results: []);
+      response_entity = response_dto.response();
+
+      if (response_entity.getMessage() == 'Different password') {
         res = ResponseEntity(
             statusCode: 400,
             message: 'password does not match',
@@ -106,7 +129,7 @@ class AuthenticationRemoteDatasource {
             timestamp: DateTime.now().toString());
         return res;
       }
-      if (username != user[0].email) {
+      if (response_entity.getMessage() == 'not found user by email') {
         res = ResponseEntity(
             statusCode: 400,
             message: 'user does not exist',
