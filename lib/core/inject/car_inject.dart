@@ -39,3 +39,15 @@ class Cars {
     );
   }
 }
+/**
+ *     GetIt getIt = GetIt.instance;
+
+    // detasources
+    getIt.registerLazySingleton<IAuthenticationDatasource>(
+      () => AuthenticationRemoteDatasource(getIt()),
+    );
+    // repositories
+    getIt.registerLazySingleton<AuthenticationRepository>(
+      () => AuthenticationRepositoryImp(datasource: getIt()),
+    );
+ */

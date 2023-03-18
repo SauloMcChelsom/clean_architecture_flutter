@@ -1,11 +1,12 @@
 import 'package:clean_architecture_flutter/core/domain/entities/response_entity.dart';
+import 'package:clean_architecture_flutter/features/authentication/data/datasources/authentication_datasource.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/datasources/local/authentication_local_datasource.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/datasources/remote/authentication_remote_datasource.dart';
 import 'package:clean_architecture_flutter/features/authentication/domain/repositories/authentication_repository.dart';
 
 class AuthenticationRepositoryImp implements AuthenticationRepository {
   //final AuthenticationLocalDatasource datasource;
-  final AuthenticationRemoteDatasource datasource;
+  final IAuthenticationDatasource datasource;
 
   AuthenticationRepositoryImp({required this.datasource});
 

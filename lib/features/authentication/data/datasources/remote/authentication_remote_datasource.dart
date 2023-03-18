@@ -1,12 +1,12 @@
 import 'package:clean_architecture_flutter/core/domain/entities/response_entity.dart';
 import 'package:clean_architecture_flutter/core/services/http/http_service.dart';
-import 'package:clean_architecture_flutter/features/authentication/data/models/refresh_token_model.dart';
+import 'package:clean_architecture_flutter/features/authentication/data/datasources/authentication_datasource.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/models/response_dto.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/models/token_dto.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/models/token_model.dart';
 import 'package:clean_architecture_flutter/features/authentication/domain/entities/user_entity.dart';
 
-class AuthenticationRemoteDatasource {
+class AuthenticationRemoteDatasource implements IAuthenticationDatasource {
   final IHttpService http;
   AuthenticationRemoteDatasource(this.http);
 

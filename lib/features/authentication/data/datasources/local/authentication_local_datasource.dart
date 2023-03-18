@@ -1,9 +1,10 @@
 import 'package:clean_architecture_flutter/core/domain/entities/response_entity.dart';
+import 'package:clean_architecture_flutter/features/authentication/data/datasources/authentication_datasource.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/models/refresh_token_model.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/models/token_model.dart';
 import 'package:clean_architecture_flutter/features/authentication/domain/entities/user_entity.dart';
 
-class AuthenticationLocalDatasource {
+class AuthenticationLocalDatasource implements IAuthenticationDatasource {
   List<UserEntity> user = [];
   List<TokenModel> token = [];
   String access_token =
@@ -70,6 +71,27 @@ class AuthenticationLocalDatasource {
   Future<ResponseEntity> signInWithEmailAndPassword({required String username, required String password}) async {
     late ResponseEntity res;
     try {
+      var user_entity = UserEntity(email: username, password: password, name: '', providers: '', id: 0, uid: '0');
+      if (user_entity.passwordMinLength() == false) {
+        res = ResponseEntity(
+            statusCode: 400,
+            message: 'password should be at least 8 characters',
+            code: 'FAILED',
+            description: '',
+            results: user,
+            timestamp: DateTime.now().toString());
+        return res;
+      }
+      if (user_entity.passwordMaxLength() == false) {
+        res = ResponseEntity(
+            statusCode: 400,
+            message: 'password should be at max 12 characters',
+            code: 'FAILED',
+            description: '',
+            results: user,
+            timestamp: DateTime.now().toString());
+        return res;
+      }
       if (username == user[0].email && password == user[0].password) {
         var refresh_token = TokenRefreshModel(
             id: 3, token: "5915c1b8-08d0-4e27-a877-8d3c059cdc26", expires_in: "1679769985941", timestamp: "2023-02-25T21:39:59.820Z", user_id: 3);
