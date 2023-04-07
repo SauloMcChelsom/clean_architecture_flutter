@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:clean_architecture_flutter/core/domain/entities/response_entity.dart';
+import 'package:clean_architecture_flutter/shared/model/response_entity.dart';
 
 class ResponseDTO {
   String _response_text = '';

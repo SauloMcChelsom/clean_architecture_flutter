@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:clean_architecture_flutter/core/domain/entities/response_entity.dart';
+import 'package:clean_architecture_flutter/shared/model/response_entity.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/datasources/authentication_datasource.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/models/refresh_token_model.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/models/token_model.dart';

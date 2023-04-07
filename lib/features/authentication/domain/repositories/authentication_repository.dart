@@ -1,4 +1,4 @@
-import 'package:clean_architecture_flutter/core/domain/entities/response_entity.dart';
+import 'package:clean_architecture_flutter/shared/model/response_entity.dart';
 
 abstract class AuthenticationRepository {
   Future<ResponseEntity> register({required String firstName, required String lastName, required String email, required String password});

@@ -1,7 +1,9 @@
 import 'dart:convert';
 
-import 'package:clean_architecture_flutter/core/domain/entities/response_entity.dart';
-import 'package:clean_architecture_flutter/core/services/http/http_service.dart';
+import 'package:clean_architecture_flutter/shared/model/response_entity.dart';
+import 'package:clean_architecture_flutter/shared/services/http/http_service.dart';
+import 'package:clean_architecture_flutter/shared/services/http/http_service_imp.dart';
+import 'package:clean_architecture_flutter/shared/services/local_store/shared_preferences_util.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/datasources/authentication_datasource.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/models/response_dto.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/models/token_dto.dart';

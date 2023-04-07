@@ -1,4 +1,4 @@
-import 'package:clean_architecture_flutter/core/services/http/http_service.dart';
+import 'package:clean_architecture_flutter/shared/services/http/http_service_imp.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/datasources/local/authentication_local_datasource.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/datasources/remote/authentication_remote_datasource.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/repositories/authentication_repository_imp.dart';
