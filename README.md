@@ -41,37 +41,56 @@ A camada de apresentação interage via camada de domínio, ou seja, entidades e
 
 # How to run
 
-Verificando a versão instalada do NodeJS
+Executar em modo de produção
 ```bash
-# deve ser igual ou superior a v16.13.2
-node --version
+flutter run --dart-define ENV=prod
 ```
 
-`flutter run`
+Executar em modo de homologação
+```bash
+flutter run --dart-define ENV=homolog
+```
 
-`flutter run --dart-define ENV=prod`
-`flutter run --dart-define ENV=homolog`
+Executar em modo de desenvolvimento
+```bash
+flutter run --dart-define ENV=dev
+```
+
+Construir um App.apk
+```bash
 flutter build apk --release
+```
+
+Construir um App.aab
+```bash
 flutter build appbundle
+```
 
-In case of addition to injector file,
-run `flutter pub run build_runner build --delete-conflicting-outputs`
-
+Executar em um emulator
+```bash
 flutter run -d emulator-5554
+```
 
+limpar o cache de compilação do projeto Flutter
+```bash
 flutter clean
+```
 
+Comando para excluir pacotes `Dart`
+```bash
 dart pub cache clean
+```
 
+Comando para excluir pacotes `Flutter`
+```bash
 flutter pub cache clean
+```
 
 ## How to test
 
-`flutter test --coverage`
-To see percentage
-`lcov -r coverage/lcov.info "*/__test*__/*" "*.g.dart" -o coverage/lcov_cleaned.info`
-To see coverage of each file in html view
-`genhtml coverage/lcov_cleaned.info -o coverage`
+```bash
+flutter test --coverage
+```
 
 
 # Objetivo
