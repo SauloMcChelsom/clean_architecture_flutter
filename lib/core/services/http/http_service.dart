@@ -1,4 +1,6 @@
 import 'package:clean_architecture_flutter/core/domain/entities/response_entity.dart';
+import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:uno/uno.dart';
 import 'package:http/http.dart' as http;
@@ -44,10 +46,10 @@ class HttpService extends IHttpService {
   @override
   Future<ResponseEntity> get(String url, {data}) async {
     var _url = Uri.parse(url);
-    final headers = _headers();
+    final header = await _headers();
     var response_entitty = new ResponseEntity(code: '', description: '', message: '', results: [], statusCode: 0, timestamp: '');
     try {
-      var response = await http.get(_url, headers: headers);
+      var response = await http.get(_url, headers: header);
       response_entitty.setCode('SUCCESS');
       response_entitty.setDescription('');
       response_entitty.setMessage('successful in request method GET by HTTP');
@@ -69,10 +71,10 @@ class HttpService extends IHttpService {
   @override
   Future<ResponseEntity> post(String url, {data}) async {
     var _url = Uri.parse(url);
-    final headers = _headers();
+    final header = await _headers();
     var response_entitty = new ResponseEntity(code: '', description: '', message: '', results: [], statusCode: 0, timestamp: '');
     try {
-      var response = await http.post(_url, body: data, headers: headers);
+      var response = await http.post(_url, body: data, headers: header);
       response_entitty.setCode('SUCCESS');
       response_entitty.setDescription('');
       response_entitty.setMessage('successful in request method POST by HTTP');
@@ -94,7 +96,7 @@ class HttpService extends IHttpService {
   @override
   Future<ResponseEntity> put(String url, {data}) async {
     var _url = Uri.parse(url);
-    final headers = _headers();
+    final headers = await _headers();
     late http.Response response = null!;
     late ResponseEntity response_entitty = null!;
     try {
@@ -122,7 +124,7 @@ class HttpService extends IHttpService {
   @override
   Future<ResponseEntity> delete(String url, {data}) async {
     var _url = Uri.parse(url);
-    final headers = _headers();
+    final headers = await _headers();
     late http.Response response = null!;
     late ResponseEntity response_entitty = null!;
     try {
@@ -150,7 +152,7 @@ class HttpService extends IHttpService {
   @override
   Future<ResponseEntity> patch(String url, {data}) async {
     var _url = Uri.parse(url);
-    final headers = _headers();
+    final headers = await _headers();
     late http.Response response = null!;
     late ResponseEntity response_entitty = null!;
     try {
@@ -181,7 +183,7 @@ class UnoHttpService extends IHttpService {
 
   @override
   Future<ResponseEntity> delete(String url, {data}) async {
-    final headers = _headers();
+    final headers = await _headers();
     late dynamic response = null!;
     late ResponseEntity response_entitty = null!;
     try {
@@ -208,7 +210,7 @@ class UnoHttpService extends IHttpService {
 
   @override
   Future<ResponseEntity> get(String url) async {
-    final headers = _headers();
+    final headers = await _headers();
     late dynamic response = null!;
     late ResponseEntity response_entitty = null!;
     try {
@@ -235,7 +237,7 @@ class UnoHttpService extends IHttpService {
 
   @override
   Future<ResponseEntity> patch(String url, {data}) async {
-    final headers = _headers();
+    final headers = await _headers();
     late dynamic response = null!;
     late ResponseEntity response_entitty = null!;
     try {
@@ -262,7 +264,7 @@ class UnoHttpService extends IHttpService {
 
   @override
   Future<ResponseEntity> post(String url, {data}) async {
-    final headers = _headers();
+    final headers = await _headers();
     late dynamic response = null!;
     late ResponseEntity response_entitty = null!;
     try {
@@ -289,7 +291,7 @@ class UnoHttpService extends IHttpService {
 
   @override
   Future<ResponseEntity> put(String url, {data}) async {
-    final headers = _headers();
+    final headers = await _headers();
     late dynamic response = null!;
     late ResponseEntity response_entitty = null!;
     try {
@@ -320,7 +322,7 @@ class DioHttpService extends IHttpService {
 
   @override
   Future<ResponseEntity> delete(String url, {data}) async {
-    final headers = _headers();
+    final headers = await _headers();
     late dynamic response = null!;
     late ResponseEntity response_entitty = null!;
     try {
@@ -347,7 +349,7 @@ class DioHttpService extends IHttpService {
 
   @override
   Future<ResponseEntity> get(String url) async {
-    final headers = _headers();
+    final headers = await _headers();
     late dynamic response = null!;
     late ResponseEntity response_entitty = null!;
     try {
@@ -374,7 +376,7 @@ class DioHttpService extends IHttpService {
 
   @override
   Future<ResponseEntity> patch(String url, {data}) async {
-    final headers = _headers();
+    final headers = await _headers();
     late dynamic response = null!;
     late ResponseEntity response_entitty = null!;
     try {
@@ -401,7 +403,7 @@ class DioHttpService extends IHttpService {
 
   @override
   Future<ResponseEntity> post(String url, {data}) async {
-    final headers = _headers();
+    final headers = await _headers();
     late dynamic response = null!;
     late ResponseEntity response_entitty = null!;
     try {
@@ -428,7 +430,7 @@ class DioHttpService extends IHttpService {
 
   @override
   Future<ResponseEntity> put(String url, {data}) async {
-    final headers = _headers();
+    final headers = await _headers();
     late dynamic response = null!;
     late ResponseEntity response_entitty = null!;
     try {
@@ -454,19 +456,6 @@ class DioHttpService extends IHttpService {
   }
 }
 
-Map<String, String> _headers() {
-  final String tokenUser = '';
-  late Map<String, String> headers = null!;
-  if (tokenUser.isNotEmpty) {
-    headers = {"Content-Type": "application/json", "Authorization": "Bearer $tokenUser"};
-  } else {
-    headers = {'Accept': 'application/json', 'Content-Type': 'application/json'};
-  }
-
-  print('headers $headers');
-  return headers;
-}
-
 abstract class IHttpService {
   final interceptors = <MyInterceptor>[];
 
@@ -481,4 +470,32 @@ abstract class MyInterceptor<TRequest, TResponse, TError> {
   Future<TRequest> onRequest(TRequest request);
   Future<TResponse> onResponse(TResponse response);
   Future<TError> onError(TError error);
+}
+
+Future<Map<String, String>> _headers() async {
+  final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  final SharedPreferencesUtil sharedPreferencesUtil = SharedPreferencesUtil(sharedPreferences: sharedPreferences);
+  final token = sharedPreferencesUtil.getAccessToken();
+  late Map<String, String> headers = {'Accept': 'application/json', 'Content-Type': 'application/json'};
+  if (token.isNotEmpty && token.length >= 10) {
+    headers = {"Content-Type": "application/json", "Authorization": "Bearer $token"};
+  }
+  return headers;
+}
+
+class SharedPreferencesUtil {
+  SharedPreferencesUtil({required this.sharedPreferences});
+
+  final SharedPreferences sharedPreferences;
+
+  @visibleForTesting
+  static const String access_token = '__access_token_collection_key__';
+
+  String getAccessToken() {
+    return sharedPreferences.getString(access_token) ?? '';
+  }
+
+  Future<bool> setAccessToken(String count) async {
+    return sharedPreferences.setString(access_token, count);
+  }
 }

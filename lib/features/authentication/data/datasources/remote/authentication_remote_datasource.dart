@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:clean_architecture_flutter/core/domain/entities/response_entity.dart';
 import 'package:clean_architecture_flutter/core/services/http/http_service.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/datasources/authentication_datasource.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/models/response_dto.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/models/token_dto.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/models/token_model.dart';
+import 'package:clean_architecture_flutter/features/authentication/data/models/user_model.dart';
 import 'package:clean_architecture_flutter/features/authentication/domain/entities/user_entity.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationRemoteDatasource implements IAuthenticationDatasource {
   final IHttpService http;
@@ -40,25 +44,55 @@ class AuthenticationRemoteDatasource implements IAuthenticationDatasource {
             timestamp: DateTime.now().toString());
         return res;
       }
-      if (user.isNotEmpty) {
-        if (user[0].email == email) {
-          res = ResponseEntity(
-              statusCode: 400, message: 'email already in use', code: 'FAILED', description: '', results: user, timestamp: DateTime.now().toString());
-          return res;
-        }
+
+      ResponseEntity response = await http.get('http://localhost:3000/v1/public/user/email/$email');
+      if (response.getStatusCode() == 200) {
+        res = ResponseEntity(
+            statusCode: 200, message: 'email already exist', code: 'FAILED', description: '', results: [], timestamp: DateTime.now().toString());
+        return res;
       }
-      user.add(user_entity);
-      if (user[0].email.isNotEmpty) {
+
+      var data = '{"email": "${user_entity.email}", "password": "${user_entity.password}","name": "${user_entity.name}"}';
+      ResponseEntity register = await http.post('http://localhost:3000/v1/public/auth/create-new-account', data: data);
+
+      if (register.getStatusCode() == 201) {
         res = ResponseEntity(
             statusCode: 200, message: 'successful register', code: 'SUCCESS', description: '', results: user, timestamp: DateTime.now().toString());
         return res;
       }
+
+      var text = register.getResults().toString();
+      var json = jsonDecode(text);
+      final property = json[0]["message"][0]["property"];
+
+      if (register.getStatusCode() == 400 && property == "email") {
+        res = ResponseEntity(
+            statusCode: 200,
+            message: 'email must be an email',
+            code: 'SUCCESS',
+            description: '',
+            results: user,
+            timestamp: DateTime.now().toString());
+        return res;
+      }
+
+      if (register.getStatusCode() == 400 && property == "name") {
+        res = ResponseEntity(
+            statusCode: 200,
+            message: 'name must be longer than or equal to 2 characters',
+            code: 'SUCCESS',
+            description: '',
+            results: user,
+            timestamp: DateTime.now().toString());
+        return res;
+      }
+
       res = ResponseEntity(
           statusCode: 400,
           message: 'it was not possible to register the user',
           code: 'FAILED',
-          description: '',
-          results: user,
+          description: register.getResults().toString(),
+          results: [user_entity.toString()],
           timestamp: DateTime.now().toString());
       return res;
     } catch (e) {
@@ -112,6 +146,11 @@ class AuthenticationRemoteDatasource implements IAuthenticationDatasource {
             description: '',
             results: [tokens],
             timestamp: DateTime.now().toString());
+        this.token.add(TokenModel(access_token: tokenObject.token().access_token, refresh_token: tokenObject.token().refresh_token));
+        //-> token add header
+        final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        final SharedPreferencesUtil sharedPreferencesUtil = SharedPreferencesUtil(sharedPreferences: sharedPreferences);
+        sharedPreferencesUtil.setAccessToken(tokenObject.token().access_token);
         return res;
       }
 
@@ -178,7 +217,12 @@ class AuthenticationRemoteDatasource implements IAuthenticationDatasource {
   Future<ResponseEntity> getUser() async {
     late ResponseEntity res;
     try {
-      if (user.isNotEmpty) {
+      ResponseEntity response = await http.get('http://localhost:3000/v1/private/user/find-by-acess-token');
+      if (response.getStatusCode() == 200) {
+        var results = jsonDecode(response.getResults()[0]);
+        var user_obj = results["results"];
+        final userEntity = UserDTO(user_text: user_obj).user();
+        this.user.add(userEntity);
         return ResponseEntity(
             statusCode: 200, message: 'user found', code: 'SUCCESS', description: '', results: user, timestamp: DateTime.now().toString());
       }

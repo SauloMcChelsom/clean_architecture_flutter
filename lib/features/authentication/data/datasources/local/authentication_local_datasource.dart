@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:clean_architecture_flutter/core/domain/entities/response_entity.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/datasources/authentication_datasource.dart';
 import 'package:clean_architecture_flutter/features/authentication/data/models/refresh_token_model.dart';
@@ -35,25 +37,78 @@ class AuthenticationLocalDatasource implements IAuthenticationDatasource {
             timestamp: DateTime.now().toString());
         return res;
       }
-      if (user.isNotEmpty) {
-        if (user[0].email == email) {
+
+      if (this.user.length >= 1) {
+        if (this.user[0].email == email) {
           res = ResponseEntity(
-              statusCode: 400, message: 'email already in use', code: 'FAILED', description: '', results: user, timestamp: DateTime.now().toString());
+              statusCode: 200, message: 'email already exist', code: 'FAILED', description: '', results: [], timestamp: DateTime.now().toString());
+          return res;
+        } else {
+          res = ResponseEntity(
+              statusCode: 200, message: 'email already exist', code: 'FAILED', description: '', results: [], timestamp: DateTime.now().toString());
           return res;
         }
       }
-      user.add(user_entity);
-      if (user[0].email.isNotEmpty) {
+
+      int getStatusCode = 201;
+      String property = "";
+
+      if (email.length == 0) {
+        getStatusCode = 400;
+        property = "email";
+      }
+
+      if (firstName.length == 0) {
+        getStatusCode = 400;
+        property = "name";
+      }
+
+      if (getStatusCode == 400 && property == "email") {
+        res = ResponseEntity(
+            statusCode: 200,
+            message: 'email must be an email',
+            code: 'SUCCESS',
+            description: '',
+            results: user,
+            timestamp: DateTime.now().toString());
+        return res;
+      }
+
+      if (getStatusCode == 400 && property == "name") {
+        res = ResponseEntity(
+            statusCode: 200,
+            message: 'name must be longer than or equal to 2 characters',
+            code: 'SUCCESS',
+            description: '',
+            results: user,
+            timestamp: DateTime.now().toString());
+        return res;
+      }
+
+      if (getStatusCode == 201) {
+        user.add(UserEntity(
+            email: user_entity.email,
+            id: 125,
+            is_active: false,
+            last_login: '',
+            name: user_entity.name,
+            password: user_entity.password,
+            providers: '',
+            role: '',
+            timestamp: '',
+            uid: '',
+            updated_at: ''));
         res = ResponseEntity(
             statusCode: 200, message: 'successful register', code: 'SUCCESS', description: '', results: user, timestamp: DateTime.now().toString());
         return res;
       }
+
       res = ResponseEntity(
           statusCode: 400,
           message: 'it was not possible to register the user',
           code: 'FAILED',
-          description: '',
-          results: user,
+          description: "",
+          results: [user_entity.toString()],
           timestamp: DateTime.now().toString());
       return res;
     } catch (e) {

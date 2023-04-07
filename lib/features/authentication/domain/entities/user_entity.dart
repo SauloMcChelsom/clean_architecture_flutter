@@ -24,6 +24,10 @@ class UserEntity {
       this.timestamp = '',
       this.role = 'user'});
 
+  String getName() {
+    return this.name;
+  }
+
   bool passwordMinLength() {
     if (password.length >= 8) {
       return true;
