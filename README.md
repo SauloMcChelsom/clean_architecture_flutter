@@ -1,6 +1,15 @@
 # Arquitetura
 
-(Geralmente é um documento escrito em inglês)
+Aplicativo de propagação com arquitetura de código limpo
+
+Na arquitetura de código limpo, existem três camadas principais
+
+- Data
+- Domain
+- Presentation
+- shared (também pode ser chamado de core ou common)
+
+![image](https://raw.githubusercontent.com/SauloMcChelsom/clean_architecture_flutter/feature/auth/architecture1.png)
 
 # Objetivo
 
