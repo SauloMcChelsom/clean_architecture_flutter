@@ -15,6 +15,65 @@ Na arquitetura de código limpo, existem três camadas principais
 # Exemplo 2
 ![image](https://raw.githubusercontent.com/SauloMcChelsom/clean_architecture_flutter/feature/auth/architecture2.png)
 
+## Shared
+
+Este contém todas as funcionalidades comuns para o aplicativo. por exemplo, cliente http, configuração de ambiente, itens específicos da plataforma, como verificador de rede, etc.
+
+Essas funcionalidades comuns serão usadas pela camada de dados, camada de domínio e camada de apresentação, por exemplo, cliente http por fonte de dados remota, informações de rede por camada de repositório, enums por camada de domínio e configuração por apresentação.
+
+## Domain
+
+Esta é a camada mais interna e conterá a lógica de negócios principal, ou seja, casos de uso e objetos de negócios também chamados de entidades, o caso de uso depende do contrato do repositório (não da implementação)
+
+## Data
+
+As camadas de dados contêm a implementação do repositório e essa camada está mais próxima das fontes de dados reais e é responsável pela comunicação com as fontes de dados.
+
+A camada de dados retorna os modelos e não entidades e o modelo também contém o mapeador fromJson e toJson.
+
+Observação: não temos uma classe de mapeador extra, vamos apenas aproveitar o construtor nomeado por dart para mapear nosso conjunto de dados de um formulário para nossos modelos. toJson e fromJson.
+
+## Presentation
+
+Essa camada contém todas as informações sobre a interface do usuário e tudo para mostrar ao cliente usuário final. A camada de apresentação também contém o bloco que é o gerenciamento de estado e geralmente denominado como cérebro da interface do usuário.
+
+A camada de apresentação interage via camada de domínio, ou seja, entidades e casos de uso.
+
+# How to run
+
+Verificando a versão instalada do NodeJS
+```bash
+# deve ser igual ou superior a v16.13.2
+node --version
+```
+
+`flutter run`
+
+`flutter run --dart-define ENV=prod`
+`flutter run --dart-define ENV=homolog`
+flutter build apk --release
+flutter build appbundle
+
+In case of addition to injector file,
+run `flutter pub run build_runner build --delete-conflicting-outputs`
+
+flutter run -d emulator-5554
+
+flutter clean
+
+dart pub cache clean
+
+flutter pub cache clean
+
+## How to test
+
+`flutter test --coverage`
+To see percentage
+`lcov -r coverage/lcov.info "*/__test*__/*" "*.g.dart" -o coverage/lcov_cleaned.info`
+To see coverage of each file in html view
+`genhtml coverage/lcov_cleaned.info -o coverage`
+
+
 # Objetivo
 
 Esse documento tem por objetivo principal organizar o processo de desenvolvimento do software.
