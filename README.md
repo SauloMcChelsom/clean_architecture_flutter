@@ -9,7 +9,11 @@ Na arquitetura de código limpo, existem três camadas principais
 - Presentation
 - shared (também pode ser chamado de core ou common)
 
+# Exemplo 1
 ![image](https://raw.githubusercontent.com/SauloMcChelsom/clean_architecture_flutter/feature/auth/architecture1.png)
+
+# Exemplo 2
+![image](https://raw.githubusercontent.com/SauloMcChelsom/clean_architecture_flutter/feature/auth/architecture2.png)
 
 # Objetivo
 
