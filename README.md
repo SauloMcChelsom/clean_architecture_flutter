@@ -245,3 +245,63 @@ flutter pub cache clean
 ```bash
 flutter test --coverage
 ```
+
+## How to config
+
+Comandos para gerar uma keystore:
+
+Windows:
+```bash
+cd C:\Program Files\Java\jdk-19\bin
+
+keytool -genkey -v -keystore C:\workspace\vixsystem\lysa_easy_mapping\my-key.jks -storetype JKS -keyalg RSA -keysize 2048 -validity 10000 -alias my-key-alias
+
+# password:5c501872-b448-11ed-afa1-0242ac120002
+```
+Linux/Mac:
+```bash
+keytool -genkey -v -keystore ~/my-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias my-key-alias
+```
+
+move my-key.jks para 
+```bash
+android\app\my-key.jks
+```
+
+android\key.properties
+```bash
+storePassword=5c501872-b448-11ed-afa1-0242ac120002
+keyPassword=5c501872-b448-11ed-afa1-0242ac120002
+keyAlias=my-key-alias
+storeFile=my-key.jks
+```
+
+android\app\build.gradle
+```bash
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+android {
+	...
+    signingConfigs {
+       release {
+           keyAlias keystoreProperties['keyAlias']
+           keyPassword keystoreProperties['keyPassword']
+           storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+           storePassword keystoreProperties['storePassword']
+       }
+   }
+
+    buildTypes {
+        release {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            //signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
+        }
+    }
+}
+```
