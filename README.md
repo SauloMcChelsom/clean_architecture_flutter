@@ -171,6 +171,30 @@ Pontos a serem levados em consideração antes de introduzir uma nova feature:
 
 # How to run
 
+Listar emulador do android studio
+```bash
+C:\Users\saulo\AppData\Local\Android\Sdk\tools\emulator -list-avds
+```
+
+Iniciar o emulador pela linha de comando 
+```bash
+emulator -avd Pixel_3a_API_33_x86_64 -netdelay none -netspeed full
+```
+
+```bash
+C:\Users\saulo\AppData\Local\Android\sdk\tools\emulator -avd Pixel_3a_API_33_x86_64  -netdelay none -netspeed full
+```
+
+Quais dispositivos disponivel para executar o app
+```bash
+flutter devices
+```
+
+Criar splash
+```bash
+flutter pub run flutter_native_splash:create
+```
+
 Executar em modo de produção
 ```bash
 flutter run --dart-define ENV=prod

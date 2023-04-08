@@ -48,8 +48,16 @@ dependencies:
   mime: 1.0.1
   internet_connection_checker: ^1.0.0+1
   decimal: 2.1.0
-  permission_handler: ^10.2.0
   file_manager: ^1.0.2
+  lottie: ^2.2.0
+  flutter_native_splash: ^2.2.17
+  rxdart: ^0.27.7
+  bloc: ^8.1.0
+  flutter_bloc: ^8.1.1
+  bloc_pattern: ^3.0.1
+  permission_handler: ^10.2.0
+  share_plus: ^4.0.4
+  
 
 dev_dependencies:
   flutter_test:
